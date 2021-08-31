@@ -1,2 +1,2 @@
 # cl-waffe
-A mgl api
+A deeplearning library
