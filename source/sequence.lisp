@@ -22,4 +22,4 @@
 								      "KEYWORD")))
 	     layers))))
 
-(defmacro init-sequence (sequence-name &rest args)
+(defmacro init-sequence (sequence-name &rest args))
