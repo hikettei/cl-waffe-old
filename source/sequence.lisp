@@ -2,7 +2,12 @@
 (in-package :cl-waffe)
 
 
-(defclass SequenceLayer () nil)
+(defmacro symbolk (symbol) `(intern (symbol-name ,symbol) "KEYWORD"))
+
+(defclass SequenceLayer ()
+  ((self :accessor seqself)
+   (initarg :accessor seqargs)
+   (layers :accessor seqlayers)))
 
 (defmacro defsequence (sequence-name as initargs &rest layers)
   `(defclass ,sequence-name (SequenceLayer)
@@ -14,12 +19,10 @@
 		:initform ',initargs)
       (layers :accessor seqlayers
 	      :initargs :layers
-	      :initform ,(map 'list #'(lambda (layer) (car layer))
+	      :initform ',(map 'list #'(lambda (layer) (car layer))
 			       layers))
       ,@(map 'list #'(lambda (layer) `(,(car layer) :initform (quote ,(second layer))
-						    :initarg ,(intern (symbol-name
-								      (car layer))
-								      "KEYWORD")))
+						    :initarg ,(symbolk (car layer))))
 	     layers))))
 
-(defmacro init-sequence (sequence-name &rest args))
+
