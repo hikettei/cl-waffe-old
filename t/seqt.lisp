@@ -3,4 +3,4 @@
 	     (f (dense input-shape :activation #'relu))
 	     (s (dense 1           :activation #'sigmoid)))
 
-(make-sequence simplenet 100)
+(init-sequence 'simplenet 100)

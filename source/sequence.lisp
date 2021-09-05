@@ -17,6 +17,9 @@
       (initargs :accessor seqargs
 		:initarg :initargs
 		:initform ',initargs)
+      (initargs-value :accessor initargs-value
+		      :initarg :initargvalue
+		      :initform nil)
       (layers :accessor seqlayers
 	      :initargs :layers
 	      :initform ',(map 'list #'(lambda (layer) (car layer))
@@ -25,4 +28,11 @@
 						    :initarg ,(symbolk (car layer))))
 	     layers))))
 
+(defmacro init-sequence (seq-name &rest args)
+  `(compile-sequence (make-instance ,seq-name) ,args))
 
+(defmacro compile-sequence (seq args)
+  `(progn
+     (setf (slot-value ,seq 'initargs-value) (list ,@args))
+     ,seq))
+			     
