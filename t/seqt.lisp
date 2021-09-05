@@ -1,6 +1,9 @@
 
 (defsequence simplenet seq (input-shape)
-	     (f (dense input-shape :activation #'relu))
-	     (s (dense 1           :activation #'sigmoid)))
+	     (f (dense input-shape))
+	     (s (dense 1)))
 
-(init-sequence 'simplenet 100)
+(defparameter model (SimpleNet 10))
+
+(defmethod call ((model SimpleNet) x)
+  (calllayer model f x))
