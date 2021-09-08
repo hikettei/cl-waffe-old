@@ -1,7 +1,7 @@
 
 (defsequence simplenet seq (input-shape)
-	     (f (dense input-shape #'relu))
-	     (s (dense 1           #'sigmoid)))
+	     (f (dense input-shape))
+	     (s (dense 1)))
 
 (defparameter model (SimpleNet 10))
 

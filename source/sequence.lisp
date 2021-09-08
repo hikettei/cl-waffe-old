@@ -28,7 +28,7 @@
 		 :initargs :layers
 		 :initform ',(map 'list #'(lambda (layer) (car layer))
 			       layers)) ; init layer sitai
-	 ,@(map 'list #'(lambda (layer) `(,(car layer) :initform (quote ,(second layer))
+	 ,@(map 'list #'(lambda (layer) `(,(car layer) :initform (quote (initlayer ,(car layer) ,@(cdr layer)))
 						       :initarg ,(symbolk (car layer))))
 		layers)))))
 
@@ -65,8 +65,7 @@
 		     ,model)))
 
 (defmacro calllayer (model layer-name &rest args)
-  `(let ((input-layer 1))
-     (funcall (slot-value ,model ',layer-name) ,@args)))
+  `(funcall (slot-value ,model ',layer-name) ,@args))
 
 (defmacro init-sequence (seq-name &rest args)
   `(compile-sequence (make-instance ,seq-name) ,args))
@@ -74,6 +73,12 @@
 (defmacro compile-sequence (seq args)
   `(progn
      (setf (slot-value ,seq 'initargs-value) (list ,@args))
-     ,seq))
+     (let (,@(loop for i from 0 to (1- (length ,args))
+		   :collect `((,(nth i (slot-value ,seq 'initargs))
+			       (nth ,i args)))))
+
+       
+     )))
+
 
 			     
